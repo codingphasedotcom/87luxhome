@@ -1,69 +1,337 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import { useRef, useEffect } from "react";
+import gsap from 'gsap';
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import { createClient } from 'contentful'
+import MainLayout from '../components/Layouts/MainLayout';
 
-export default function Home() {
+export async function getStaticProps(){
+  const client = createClient({
+    space: process.env.CONTENTFUL_SPACEID,
+    accessToken: process.env.CONTENTFUL_ACCESSTOKEN,
+  })
+
+  const posts = await client.getEntries({content_type: 'post'})
+
+  return {
+    props: {
+      posts: posts.items
+    }
+  }
+}
+export default function Home(props) {
+  console.log(props.posts)
+  gsap.registerPlugin(ScrollTrigger); 
+  const ref = useRef(null);
+  
+  useEffect(() => {
+    
+    const element = ref.current;
+    console.log(element.querySelector(".apps-section").offsetHeight)
+    const toptl = gsap.timeline()
+    toptl.fromTo(
+      '.hero__img', 
+      {
+        opacity: 0,
+        x: -1000
+      },
+      {
+        opacity: 1,
+        x: 0,
+        duration: .3,
+      }
+    )
+    .fromTo(
+      '.review1', 
+      {
+        opacity: 0,
+        x: -200
+      },
+      {
+        opacity: 1,
+        x: 0,
+        duration: .3,
+        delay: .3
+      }
+    )
+    .fromTo(
+      '.hero__info h1', 
+      {
+        opacity: 0,
+        x: -100
+      },
+      {
+        opacity: 1,
+        x: 0,
+        duration: .6,
+        delay: .6
+      }
+    )
+    .fromTo(
+      '.hero__info h2', 
+      {
+        opacity: 0,
+        y: 100
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: .6,
+        delay: .1
+      }
+    )
+
+    const appsSectionTL = gsap.timeline()
+    appsSectionTL.fromTo(
+      element.querySelector(".apps-section h2"),
+      {
+        opacity: 0,
+        // scale: 0.2,
+        y: -100
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: .4,
+        ease: "power1.inOut",
+        scrollTrigger: {
+          trigger: element.querySelector(".apps-section"),
+          toggleActions: 'restart pause none pause',
+          start: "-400px 200px",
+          id: 'title',
+          end: '600px bottom',
+          // markers: 1,
+          scrub: 1
+        }
+      }
+    )
+    .fromTo(
+      element.querySelector(".apps-section p"),
+      {
+        opacity: 0,
+        // scale: 0.2,
+        y: -100
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: '.5',
+        ease: "power1.inOut",
+        scrollTrigger: {
+          trigger: element.querySelector(".apps-section"),
+          toggleActions: 'restart pause none pause',
+          id: 'paragraph',
+          start: "-200px 200px",
+          end: '600px bottom',
+          // markers: 1,
+          scrub: 1
+        }
+      },
+    )
+    .fromTo(
+      element.querySelector(".apps-img-1"),
+      {
+        opacity: 0,
+        scale: .8,
+        y: -100
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: '1',
+        ease: "power1.inOut",
+        scrollTrigger: {
+          trigger: element.querySelector(".apps-section"),
+          // toggleActions: 'restart pause none pause',
+          id: 'image',
+          start: "top top",
+          end: '400px bottom',
+          // markers: 1,
+          scrub: 1
+        }
+      },
+    )
+    
+
+
+    const servicesTL = gsap.timeline()
+    servicesTL.fromTo(
+      element.querySelectorAll(".services-section__item"),
+      {
+        opacity: 0,
+        // scale: 0.2,
+        y: -100
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: .6,
+        stagger: 0.5,
+        delay: 0.5,
+        ease: "none",
+        scrollTrigger: {
+          trigger: element.querySelector(".services-section"),
+          // toggleActions: 'restart pause none pause',
+          start: "-200px 600px",
+          end: '400px 400px',
+          markers: 1,
+          scrub: true
+        }
+      }
+    );
+    const videoTL = gsap.timeline()
+    servicesTL.fromTo(
+      element.querySelectorAll(".schedule__video"),
+      {
+        opacity: 0,
+        // scale: 0.2,
+        y: -100
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: .6,
+        stagger: 0.5,
+        delay: 0.5,
+        ease: "none",
+        scrollTrigger: {
+          trigger: element.querySelector(".schedule"),
+          // toggleActions: 'restart pause none pause',
+          start: "200px bottom",
+          end: 'bottom 400px',
+          markers: 1,
+          scrub: true
+        }
+      }
+    );
+  }, []);
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
-        <title>Create Next App</title>
+        <title>87Lux</title>
         <meta name="description" content="Generated by create next app" />
         <link rel="icon" href="/favicon.ico" />
+        
+        
       </Head>
+      <MainLayout>
+        <div ref={ref}>
+          <section className="hero">
+            <div className="container">
+              <div className="hero__img">
+                <img className="hero__profile-img" src="/img/guy1.jpg"/>
+                <a href="#" className="hero__project-btn">
+                  Check Theme
+                </a>
+                <div className="review1">
+                  <img src="https://randomuser.me/api/portraits/women/47.jpg"/>
+                  <div className="review1__info">
+                    <span className="review1__name">Jen Smith</span>
+                    <span className="review1__title">Project Manager</span>
+                    <div className="review1__stars">
+                      <i className="fas fa-star" />
+                      <i className="fas fa-star" />
+                      <i className="fas fa-star" />
+                      <i className="fas fa-star" />
+                      <i className="fas fa-star" />
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div className="hero__info">
+                <h1>Venti </h1>
+                <h2>Shopify Theme 2.0</h2>
+              </div>
+            </div>
+          </section>
+          <section className="apps-section">
+            <div className="container">
+              <div className="row">
+                <div className="col-md-6">
+                  <h2>Apps</h2>
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+                </div>
+                <div className="col-md-6">
+                  <img src="/img/app-code.jpg" className="apps-img-1" />
+                </div>
+              </div>
+              
+            </div>
+          </section>
+          
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+          <section className="services-section">
+            <div className="container">
+              <div className="row">
+                <div className="col-md-4 services-section__item">
+                  <i className="las la-drafting-compass"></i>
+                  Design
+                </div>
+                <div className="col-md-4 services-section__item">
+                  <i className="las la-laptop-code"></i>
+                  Code
+                </div>
+                <div className="col-md-4 services-section__item">
+                <i className="las la-rocket"></i>
+                  Deploy
+                </div>
+              </div>
+            </div>
+          </section>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+          <section className="schedule">
+            <h2>Let's work</h2>
+            <form>
+              <input type="email" placeholder="Email" />
+              <button type="submit">Book A Call</button>
+            </form>
+          <video className="schedule__video" width="320" height="240" autoPlay loop muted playsInline >
+            <source src="/img/collab-video.mp4" type="video/mp4" />
+          </video>
+          </section>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+          <footer className="footer">
+            <div className="container">
+              <div className="row">
+                <div className="col-lg-2 footer__column">
+                  <h4 className="footer__title">Products</h4>
+                  <a href="#">Themes & Templates</a>
+                  <a href="#">Apps</a>
+                  <a href="#">Link</a>
+                </div>
+                <div className="col-lg-2 footer__column">
+                  <h4 className="footer__title">Services</h4>
+                  <a href="#">Costume Project</a>
+                  <a href="#">Hire an Expert</a>
+                  <a href="#">Help Center</a>
+                </div>
+                <div className="col-lg-2 footer__column">
+                  <h4 className="footer__title">Company</h4>
+                  <a href="#">Careers</a>
+                  <a href="#">Link</a>
+                  <a href="#">Terms & Conditions</a>
+                  <a href="#">Privacy Policy</a>
+                </div>
+                <div className="col-lg-6 footer__column footer__socials">
+                  <h4 className="footer__title">Socials</h4>
+                  <a href="#">Link</a>
+                  <a href="#">Link</a>
+                  <a href="#">Link</a>
+                </div>
+              </div>
+            </div>
+            
+          </footer>
         </div>
-      </main>
+      </MainLayout>
+          
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+
     </div>
   )
 }
