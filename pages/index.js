@@ -224,12 +224,12 @@ export default function Home(props) {
           <section className="hero">
             <div className="container">
               <div className="hero__img">
-                <img className="hero__profile-img" src="/img/guy1.jpg"/>
+                <img className="hero__profile-img" src="/img/guy1.jpg" alt="Venti Shopify Theme"/>
                 <a href="#" className="hero__project-btn">
                   Check Theme
                 </a>
                 <div className="review1">
-                  <img src="https://randomuser.me/api/portraits/women/47.jpg"/>
+                  <img src="https://randomuser.me/api/portraits/women/47.jpg" alt="Venti Shopify Theme"/>
                   <div className="review1__info">
                     <span className="review1__name">Jen Smith</span>
                     <span className="review1__title">Project Manager</span>
@@ -254,10 +254,10 @@ export default function Home(props) {
               <div className="row">
                 <div className="col-md-6">
                   <h2>Apps</h2>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the {`industry's`} standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
                 </div>
                 <div className="col-md-6">
-                  <img src="/img/app-code.jpg" className="apps-img-1" />
+                  <img src="/img/app-code.jpg" className="apps-img-1" alt="Reviews"/>
                 </div>
               </div>
               
@@ -285,7 +285,7 @@ export default function Home(props) {
           </section>
 
           <section className="schedule">
-            <h2>Let's work</h2>
+            <h2>{`Let's work`}</h2>
             <form>
               <input type="email" placeholder="Email" />
               <button type="submit">Book A Call</button>
