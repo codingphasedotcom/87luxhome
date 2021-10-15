@@ -5,22 +5,22 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { createClient } from 'contentful'
 import MainLayout from '../components/Layouts/MainLayout';
 
-export async function getStaticProps(){
-  const client = createClient({
-    space: process.env.CONTENTFUL_SPACEID,
-    accessToken: process.env.CONTENTFUL_ACCESSTOKEN,
-  })
+// export async function getStaticProps(){
+//   const client = createClient({
+//     space: process.env.CONTENTFUL_SPACEID,
+//     accessToken: process.env.CONTENTFUL_ACCESSTOKEN,
+//   })
 
-  const posts = await client.getEntries({content_type: 'post'})
+//   const posts = await client.getEntries({content_type: 'post'})
 
-  return {
-    props: {
-      posts: posts.items
-    }
-  }
-}
+//   return {
+//     props: {
+//       posts: posts.items
+//     }
+//   }
+// }
 export default function Home(props) {
-  console.log(props.posts)
+  // console.log(props.posts)
   gsap.registerPlugin(ScrollTrigger); 
   const ref = useRef(null);
   
